@@ -40,3 +40,18 @@
     @apply font-heading;
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+
+.scrollbar-hide {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+
+.scrollbar-hide {
+  -ms-overflow-style: none; 
+}

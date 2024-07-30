@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import axios, { AxiosResponse } from "axios"
 import { BACKEND_URL } from "@/config/config"
 import { signupResponseInterface } from "@/interfaces/signupResponseInterface"
+import { SigninResponse } from "@/interfaces/signinResponseInterface"
 
 export default function Auth({type}: {type : "signup" | "signin"}) {
 
@@ -40,10 +41,15 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
     e.preventDefault()
     try {
       const {data} : AxiosResponse<signupResponseInterface> = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,signupInput);
-      if(data.status == 200) {
-        toast.success(data.message)
-      }
 
+      if(data.status !== 200) {
+        toast.error(data.message)
+      } else {
+        const jwt = data?.token;
+        localStorage.setItem('token' , jwt)
+        toast.success("user registered successfully!")
+      }
+      
     } catch (error) {
       if(error instanceof Error) {
         toast.error(error.message)
@@ -54,7 +60,25 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
   }
 
   const signInSubmitHandler = async (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
+    try {
+      const {data} : AxiosResponse<SigninResponse>  = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,signinInput);
+
+      if(data.status !== 200) {
+        toast.error(data.message)
+      } else {
+        const jwt = data && data?.token;
+        localStorage.setItem('token' , jwt!)
+        toast.success("user signed In successfully!")
+      }
+      
+    } catch (error) {
+      if(error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("unknown error while Sign In submit")
+      }
+    }
   }
 
   return (
