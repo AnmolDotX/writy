@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { signupController } from './controllers'
+import { blogRouter, userRouter } from './routers'
 
 const app = new Hono<{
   Bindings : {
@@ -12,27 +12,7 @@ app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
-app.post('/api/v1/user/signup', signupController)
-
-app.post('/api/v1/user/signin', (c)=>{
-  return c.text('user signin');
-})
-
-app.post('/api/v1/blog', (c)=>{
-  return c.text("blog page")
-})
-
-app.put('/api/v1/blog', (c)=>{
-  return c.text('put blog')
-})
-
-app.get('/api/v1/blog/:id', (c)=>{
-  const {id} = c.req.param();
-  return c.text(`${id}, aur bhai kya hal hai?`)
-})
-
-app.get('/api/v1/blog/bulk', (c)=>{
-  return c.text('here all the blogs');
-})
+app.route('/api/v1/user', userRouter);
+app.route('/api/v1/blog', blogRouter);
 
 export default app
