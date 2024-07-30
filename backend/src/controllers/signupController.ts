@@ -1,18 +1,25 @@
 import { Context } from "hono";
-import { signupRequestInterface } from "../interface/signupRequestData";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
-
+import { signupInput, SignupInputType } from "@anmoldotx/writy-common";
 
 export const signupController = async (c: Context) => {
-
-const prisma = new PrismaClient({
+  const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
-}).$extends(withAccelerate());
+  }).$extends(withAccelerate());
 
-  const { username, email, password }: signupRequestInterface =
-    await c.req.json();
+  const body: SignupInputType = await c.req.json();
+  const { success, data } = signupInput.safeParse(body);
+
+  if (!success) {
+    return c.json({
+      status: 403,
+      message: "Signup Input types are not correct",
+    });
+  }
+
+  const { email, password, username } = data;
 
   if (!username) {
     return c.json({
@@ -29,16 +36,16 @@ const prisma = new PrismaClient({
   }
 
   const existingUser = await prisma.user.findUnique({
-    where : {
-        email
-    }
-  })
+    where: {
+      email,
+    },
+  });
 
-  if(existingUser) {
+  if (existingUser) {
     return c.json({
-        status : 400,
-        message : "User with given email already exists!"
-    })
+      status: 400,
+      message: "User with given email already exists!",
+    });
   }
 
   if (!password) {
@@ -49,8 +56,6 @@ const prisma = new PrismaClient({
   }
 
   try {
-
-
     const newUser = await prisma.user.create({
       data: {
         name: username,
@@ -72,13 +77,13 @@ const prisma = new PrismaClient({
       });
     }
 
-    const userToken = await sign({user : newUser.id}, c.env.SIGNUP_SECRET)
+    const userToken = await sign({ user: newUser.id }, c.env.SIGNUP_SECRET);
 
     return c.json({
       status: 200,
       message: "User created successfully!",
       user: newUser,
-      token : userToken
+      token: userToken,
     });
   } catch (error) {
     if (error instanceof Error) {

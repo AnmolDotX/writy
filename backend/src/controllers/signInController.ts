@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
 import { sign } from "hono/jwt";
-
+import {SigninInputType, signinInput} from '@anmoldotx/writy-common'
 
 export const signInController = async (c : Context) => {
 
@@ -10,10 +10,16 @@ export const signInController = async (c : Context) => {
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
-    const {email, password} = await c.req.json();
-    console.log(email, password);
+    const body = await c.req.json();
+    const {success, data} = signinInput.safeParse(body);
+    if (!success) {
+        return c.json({
+          status: 403,
+          message: "Signin Input types are not correct",
+        });
+    }
+    const {email, password} = data;
     
-
     if(!email || !password) {
         c.json({
             status : 400,

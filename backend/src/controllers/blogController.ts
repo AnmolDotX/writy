@@ -1,3 +1,4 @@
+import { createBlogInput, updateBlogInput } from "@anmoldotx/writy-common";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
@@ -8,10 +9,19 @@ export const createBlog = async (c: Context) => {
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
-    const {title, content , author} = await c.req.json();
+    const body = await c.req.json();
+    const {success, data} = createBlogInput.safeParse(body);
+    if (!success) {
+        return c.json({
+          status: 403,
+          message: "Create Blog Input types are not correct",
+        });
+    }
+    const {title, content} = data;
+
     const userId = await c.get('userId');
 
-    if(!title && !content && !author) {
+    if(!title && !content) {
         return c.json({
             status : 400,
             message : "Title, content and Author is required!"
@@ -58,7 +68,16 @@ export const updateBlog = async (c: Context) => {
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
-    const {title, content , blogId} = await c.req.json();
+    const body = await c.req.json();
+
+    const {success, data} = updateBlogInput.safeParse(body);
+    if (!success) {
+        return c.json({
+          status: 403,
+          message: "update blog input types are not correct",
+        });
+    }
+    const {title, content , blogId} = data;
 
     if(!title || !content) {
         return c.json({
