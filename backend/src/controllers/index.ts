@@ -1,0 +1,1 @@
+export {signupController} from './signupController'

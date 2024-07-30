@@ -11,3 +11,6 @@ node_modules
 
 ./frontend/.env
 /frontend/.env
+
+/backend/wrangler.toml
+./backend/wrangler.toml
