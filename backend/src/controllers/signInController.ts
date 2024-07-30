@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
 import { sign } from "hono/jwt";
-import {SigninInputType, signinInput} from '@anmoldotx/writy-common'
+import {signinInput} from '@anmoldotx/writy-common'
 
 export const signInController = async (c : Context) => {
 
@@ -19,13 +19,6 @@ export const signInController = async (c : Context) => {
         });
     }
     const {email, password} = data;
-    
-    if(!email || !password) {
-        c.json({
-            status : 400,
-            message : "email and password are required!"
-        })
-    }
 
     try {
         const user = await prisma.user.findUnique({
@@ -33,14 +26,15 @@ export const signInController = async (c : Context) => {
         })
 
         if(!user) {
-            c.json({
+            return c.json({
                 status : 401,
                 message : "User does not exist!"
             })
         }
-    
+
         if(user?.password !== password) {
-            c.json({
+            
+            return c.json({
                 status : 403,
                 message : "Invalid Password!"
             })

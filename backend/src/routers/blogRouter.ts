@@ -4,12 +4,12 @@ import { jwtAuth } from "../middlewares/JWTauth";
 
 const blogRouter = new Hono();
 
+blogRouter.get('/all/bulk', getAllBlog)
 blogRouter.use("/*", jwtAuth)
-
 blogRouter
     .post('/', createBlog)
     .put('/', updateBlog)
     .get('/:id', getBlog)
-    .get('/all/bulk', getAllBlog)
+    
 
 export {blogRouter};
