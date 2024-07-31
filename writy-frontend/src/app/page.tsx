@@ -5,8 +5,8 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="flex-1 bg-background p-8 flex flex-col justify-center items-center space-y-6">
         <div className="space-y-4 text-center">
-          <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">Blogging</div>
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-6xl">"Spiting your mind, lightens it!"</h1>
+          <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">Writy</div>
+          <h1 className="text-4xl max-w-6xl font-bold tracking-tighter sm:text-6xl">&quot;The bitterest tears shed over graves are for words left unsaid and deeds left undone&quot;</h1>
           <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl/relaxed">
             Unleash your creativity and share your unique voice with the world. Our blogging platform empowers you to
             inspire, educate, and connect with your audience.
