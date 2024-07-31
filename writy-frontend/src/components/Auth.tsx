@@ -9,8 +9,18 @@ import axios, { AxiosResponse } from "axios"
 import { BACKEND_URL } from "@/config/config"
 import { signupResponseInterface } from "@/interfaces/signupResponseInterface"
 import { SigninResponse } from "@/interfaces/signinResponseInterface"
+import { useRouter } from "next/navigation"
 
+interface apiLoading {
+  signup : boolean;
+  signin : boolean
+}
 export default function Auth({type}: {type : "signup" | "signin"}) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<apiLoading>({
+    signup : false,
+    signin : false
+  });
 
   const [signupInput, setSignupInput] = useState<SignupInputType>({
     username : "",
@@ -40,6 +50,10 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
   const signUpSubmitHandler = async (e : FormEvent) => {
     e.preventDefault()
     try {
+      setIsLoading((prev)=>({
+        ...prev,
+        signup : true
+      }))
       const {data} : AxiosResponse<signupResponseInterface> = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,signupInput);
 
       if(data.status !== 200) {
@@ -48,20 +62,33 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
         const jwt = data?.token;
         localStorage.setItem('token' , jwt)
         toast.success("user registered successfully!")
+        router.replace('/blogs')
       }
-      
+
+      setIsLoading((prev)=>({
+        ...prev,
+        signup : false
+      })) 
     } catch (error) {
       if(error instanceof Error) {
         toast.error(error.message)
       } else {
         toast.error("unknown error while signUp submit")
       }
+      setIsLoading((prev)=>({
+        ...prev,
+        signup : false
+      }))
     }
   }
 
   const signInSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading((prev)=>({
+        ...prev,
+        signin : true
+      }))
       const {data} : AxiosResponse<SigninResponse>  = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,signinInput);
 
       if(data.status !== 200) {
@@ -70,7 +97,12 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
         const jwt = data && data?.token;
         localStorage.setItem('token' , jwt!)
         toast.success("user signed In successfully!")
+        router.replace('/blogs')
       }
+      setIsLoading((prev)=>({
+        ...prev,
+        signin : false
+      }))
       
     } catch (error) {
       if(error instanceof Error) {
@@ -78,6 +110,10 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
       } else {
         toast.error("unknown error while Sign In submit")
       }
+      setIsLoading((prev)=>({
+        ...prev,
+        signin : false
+      }))
     }
   }
 
@@ -112,7 +148,11 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
             changeHandler={type === "signup" ? signUpChangeHandler : signInChangeHandler}
           />
           <Button type="submit" className="w-full">
-            {type === "signup" ? "Sign Up" : "Sign In"}
+            {type === "signup" ? (
+              isLoading.signup ? "loading..." : "Sign Up"
+            ) : (
+              isLoading.signin ? "loading..." : "Sign In"
+            )}
           </Button>
         </form>
         <div className="text-center text-muted-foreground">
