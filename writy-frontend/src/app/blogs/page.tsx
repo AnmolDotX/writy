@@ -66,7 +66,7 @@ const AllBlogs = () => {
                 author={blog.author.name || "Anonymous"}
                 content={blog.content}
                 title={blog.title}
-                publishedDate={"30 June, 2024"}
+                publishedDate={new Date(blog?.publishedAt).toLocaleString('en-GB')}
               />
             ))}
           </div>

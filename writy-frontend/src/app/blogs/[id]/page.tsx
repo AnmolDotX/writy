@@ -18,7 +18,8 @@ export default function ArticlePage() {
         authorId : "",
         id : "",
         content : "",
-        title : ""
+        title : "",
+        publishedAt : ""
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const {id} = useParams();
@@ -55,7 +56,7 @@ export default function ArticlePage() {
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-bold">{blog?.title}</h1>
           <div className="flex items-center justify-center text-muted-foreground text-sm">
-            <span>June 1, 2024</span>
+            <span>{new Date(blog?.publishedAt).toLocaleString('en-GB')}</span>
             <span className="mx-2">·</span>
             <span>{`${Math.ceil(blog?.content.length/100)} minutes`}</span>
           </div>
@@ -65,15 +66,15 @@ export default function ArticlePage() {
             <div className="flex items-center text-muted-foreground text-sm">
               <Avatar className="w-8 h-8 mr-2">
                 <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>{blog.author.name.slice(0,1).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>{blog?.author.name.slice(0,1).toUpperCase()}</AvatarFallback>
               </Avatar>
-              <span>By {blog.author.name}</span>
+              <span>By {blog?.author.name}</span>
             </div>
           </div>
           <div id="blogContent" className="border-t border-muted pt-4 lg:pt-8">
             <div className="w-full min-h-96">
                 {
-                    blog.content
+                    blog?.content
                 }
             </div>
             <div className="flex items-center justify-between my-6 lg:my-8">

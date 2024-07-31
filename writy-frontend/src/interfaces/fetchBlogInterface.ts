@@ -8,6 +8,7 @@ export interface Blog {
   content: string;
   authorId: string;
   author: Author;
+  publishedAt : string
 }
 
 export interface FetchBlogsResponseInterface {

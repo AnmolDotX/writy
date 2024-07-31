@@ -8,6 +8,7 @@ export interface DetailedBlogInterface {
     content: string;
     authorId: string;
     author: Author;
+    publishedAt: string;
   }
   
 export  interface BlogResponseInterface {
