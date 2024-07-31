@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -8,8 +9,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import Cookie from 'js-cookie'
 
 const Navigator = () => {
+  const router = useRouter();
+
+  const logoutHandler = () => {
+    Cookie.remove("token");
+    router.replace("/")
+  }
+
   return (
     <div className='absolute top-2 right-3 w-96 rounded-md px-5 h-16 flex items-center justify-around shadow'>
       <Link
@@ -34,8 +45,8 @@ const Navigator = () => {
         <DropdownMenuContent className='absolute -right-4 top-4'>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=>toast.warning("We are working on profile section!")}>Profile</DropdownMenuItem>
+          <DropdownMenuItem onClick={logoutHandler}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

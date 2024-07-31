@@ -8,6 +8,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Cookie from 'js-cookie';
 
 const AllBlogs = () => {
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
@@ -19,7 +20,7 @@ const AllBlogs = () => {
       const { data }: AxiosResponse<FetchBlogsResponseInterface> =
         await axios.get(`${BACKEND_URL}/api/v1/blog/all/bulk`, {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: Cookie.get("token"),
           },
         });
       if (data) {

@@ -20,19 +20,14 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-center space-y-2">
             <div className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Beautiful Designs</h3>
+            <h3 className="text-xl font-semibold">Minimalistic Ambience</h3>
             <p className="text-muted-foreground">Stunning templates to make your blog shine.</p>
           </div>
-          <div className="flex flex-col items-center space-y-2">
-            <div className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Insightful Analytics</h3>
-            <p className="text-muted-foreground">Track your audience and optimize your content.</p>
-          </div>
-          <div className="flex flex-col items-center space-y-2">
-            <div className="h-8 w-8 text-primary" />
-            <h3 className="text-xl font-semibold">Grow Your Audience</h3>
-            <p className="text-muted-foreground">Reach more readers and build your online presence.</p>
-          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <div className="h-8 w-8 text-primary" />
+          <h3 className="text-xl font-semibold">Enter into Writy</h3>
+          <p className="text-primary animate-pulse">You will have to <span className="text-green-600">signup/login</span> to read or write in community</p>
         </div>
         <Link
           href="/publicRoute/signup"

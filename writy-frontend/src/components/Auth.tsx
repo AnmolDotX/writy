@@ -10,6 +10,7 @@ import { BACKEND_URL } from "@/config/config"
 import { signupResponseInterface } from "@/interfaces/signupResponseInterface"
 import { SigninResponse } from "@/interfaces/signinResponseInterface"
 import { useRouter } from "next/navigation"
+import Cookie from 'js-cookie'
 
 interface apiLoading {
   signup : boolean;
@@ -60,7 +61,7 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
         toast.error(data.message)
       } else {
         const jwt = data?.token;
-        localStorage.setItem('token' , jwt)
+        Cookie.set('token' , jwt)
         toast.success("user registered successfully!")
         router.replace('/blogs')
       }
@@ -95,7 +96,7 @@ export default function Auth({type}: {type : "signup" | "signin"}) {
         toast.error(data.message)
       } else {
         const jwt = data && data?.token;
-        localStorage.setItem('token' , jwt!)
+        Cookie.set('token' , jwt!)
         toast.success("user signed In successfully!")
         router.replace('/blogs')
       }

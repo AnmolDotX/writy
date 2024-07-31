@@ -9,6 +9,7 @@ import axios, { AxiosResponse } from "axios";
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Cookie from 'js-cookie'
 
 export default function ArticlePage() {
     const [blog, setBlog] = useState<DetailedBlogInterface>({
@@ -30,7 +31,7 @@ export default function ArticlePage() {
                 setIsLoading(true)
                 const {data} : AxiosResponse<BlogResponseInterface> = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`,{
                     headers : {
-                        Authorization : localStorage.getItem('token')
+                        Authorization : Cookie.get("token")
                     }
                 });
                 setBlog(data.data)

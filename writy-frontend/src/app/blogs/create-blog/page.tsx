@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
+import Cookie from 'js-cookie'
 
 export default function CreateBlog() {
 
@@ -21,7 +22,7 @@ export default function CreateBlog() {
                 content : description
             }, {
                 headers : {
-                    Authorization : localStorage.getItem("token")
+                    Authorization : Cookie.get("token")
                 }
             })
             toast.success("Blog created successfully!")
