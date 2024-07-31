@@ -7,6 +7,7 @@ export const jwtAuth = async (c : Context, next : Next) => {
     
     try {
         const user = await verify(token, c.env.SIGNIN_SECRET);
+        
         if(!user) {
             return c.json({
                 status : 403,

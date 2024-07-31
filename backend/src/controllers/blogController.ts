@@ -17,6 +17,8 @@ export const createBlog = async (c: Context) => {
           message: "Create Blog Input types are not correct",
         });
     }
+    console.log(data);
+    
     const {title, content} = data;
 
     const userId = await c.get('userId');
@@ -99,7 +101,9 @@ export const updateBlog = async (c: Context) => {
                 id : blogId
             },
             data : {
-                title, content
+                title,
+                content,
+                publishedAt : new Date()
             }
         })
 
@@ -151,6 +155,18 @@ export const getBlog = async (c: Context) => {
         const blog = await prisma.post.findUnique({
             where : {
                 id : blogId
+            }, 
+            select : {
+                id : true,
+                title : true,
+                content : true,
+                authorId : true,
+                author : {
+                    select : {
+                        name : true,
+                    }
+                },
+                publishedAt : true
             }
         })
 
@@ -190,7 +206,20 @@ export const getAllBlog = async (c: Context) => {
     }).$extends(withAccelerate());
 
     try {
-        const blogs = await prisma.post.findMany();
+        const blogs = await prisma.post.findMany({
+            select : {
+                id : true,
+                title : true,
+                content : true,
+                authorId : true,
+                author : {
+                    select : {
+                        name : true
+                    }
+                },
+                publishedAt : true
+            }
+        });
 
         if(!blogs) {
             return c.json({
