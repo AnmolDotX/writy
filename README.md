@@ -1,4 +1,4 @@
-# Writy : A private community blog
+# Writy : A private blog app
 
 This project is a Medium-like but private blog application developed to practice and showcase my CRUD application capabilities. The project uses the latest tech stack, including Next.js 14 for the frontend, Hono.js for the backend, Cloudflare for deployment and edge functions, Prisma with PostgreSQL for the database, and Vercel for frontend deployment. For styling, I utilized ShadCN and Tailwind CSS, while Zod and TypeScript were used for type validation.
 
